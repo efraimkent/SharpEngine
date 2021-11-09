@@ -34,7 +34,7 @@ namespace SharpEngine {
                 //vertices[2] += 0.001f;
                 vertices[3] += 0.001f;
                 vertices[4] -= 0.001f;
-                vertices[5] += 0.001f;
+                //vertices[5] += 0.001f;
                 //vertices[6] += 0.001f;
                 vertices[7] += 0.001f;
                 UpdateTriangleBuffer();
