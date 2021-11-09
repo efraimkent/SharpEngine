@@ -31,17 +31,18 @@ namespace SharpEngine {
                 glClear(GL_COLOR_BUFFER_BIT);
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glFlush();
-                //vertices[0] += 0.001f; //BL: x
-                vertices[1] -= 0.001f; //BL: y
-                //vertices[2] += 0.001f; //BL: z
-                //vertices[3] += 0.001f; //BR: x
-                vertices[4] -= 0.001f; //BR: y
-                //vertices[5] += 0.001f; //BR: z
-                //vertices[6] += 0.001f; //T: x
-                vertices[7] -= 0.001f; //T: y
-                //vertices[8] += 0.001f; //T: z
 
-                UpdateTriangleBuffer();
+                    vertices[0] += 0.001f; //BL: x
+                    vertices[1] += 0.001f; //BL: y
+                    //vertices[2] += 0.001f; //BL: z
+                    vertices[3] -= 0.001f; //BR: x
+                    vertices[4] += 0.001f; //BR: y
+                    //vertices[5] += 0.001f; //BR: z
+                    //vertices[6] += 0.001f; //T: x
+                    vertices[7] -= 0.001f; //T: y
+                    //vertices[8] += 0.001f; //T: z
+
+                    UpdateTriangleBuffer();
             }
         }
 
