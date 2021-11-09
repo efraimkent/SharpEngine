@@ -44,9 +44,16 @@ namespace SharpEngine {
                     vertices[7] -= x; //T: y
                     //vertices[8] += x; //T: z
 
-
                 UpdateTriangleBuffer();
+
+                EscapeWindow(window);
             }
+        }
+
+        private static void EscapeWindow(Window window) {
+            //press escape to close window
+            if (Glfw.GetKey(window, Keys.Escape) == InputState.Press)
+                Glfw.SetWindowShouldClose(window, true);
         }
 
         private static unsafe void LoadTriangleIntoBuffer() {
