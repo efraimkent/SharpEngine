@@ -26,7 +26,7 @@ namespace SharpEngine {
                 0f, .5f, 0f
             };
 
-            // load the verteces into a buffer
+            // load the vertices into a buffer
             var vertexArray = glGenVertexArray();
             var vertexBuffer = glGenBuffer();
             glBindVertexArray(vertexArray);
@@ -54,6 +54,7 @@ out vec4 result;
 
 void main() {
     result = vec4(1, 0, 0, 1);
+}
 ";
 
             // create vertex shader
