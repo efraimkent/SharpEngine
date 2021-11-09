@@ -7,12 +7,10 @@ namespace SharpEngine {
     class Program {
 
         static float[] vertices = new float[] {
-            //vertex 1 x, y, z
+            //vertex 1 x, y, z (left down)
             -.5f, -.5f, 0f,
-
-            //vertex 2 x, y, z
+            //vertex 2 x, y, z (
             .5f, -.5f, 0f,
-
             //vertex 3 x, y, z
             0f, .5f, 0f
         };
@@ -27,11 +25,18 @@ namespace SharpEngine {
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
-                glClearColor(.15f, .05f, .2f, 1);
+                glClearColor(0, 0, 0, 1);
                 glClear(GL_COLOR_BUFFER_BIT);
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glFlush();
-                vertices[3] += 0.001f;
+                //vertices[0] += 0.001f;
+                //vertices[1] += 0.001f;
+                //vertices[2] += 0.001f;
+                //vertices[3] += 0.001f;
+                //vertices[4] += 0.001f;
+                //vertices[5] += 0.001f;
+                //vertices[6] += 0.001f;
+                //vertices[7] += 0.001f;
                 UpdateTriangleBuffer();
             }
         }
