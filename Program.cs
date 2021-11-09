@@ -15,7 +15,7 @@ namespace SharpEngine {
             0f, .5f, 0f
         };
 
-        static void Main(string[] args) {
+        static void Main() {
             var window = CreateWindow();
 
             LoadTriangleIntoBuffer();
@@ -32,22 +32,30 @@ namespace SharpEngine {
                 glDrawArrays(GL_TRIANGLES, 0, 3);
                 glFlush();
 
-                float x = 0.001f;
+                float speed = 0.001f;
 
-                vertices[0] += x; //BL: x
-                    vertices[1] += x; //BL: y
-                    //vertices[2] += x; //BL: z
-                    vertices[3] -= x; //BR: x
-                    vertices[4] += x; //BR: y
-                    //vertices[5] += x; //BR: z
-                    //vertices[6] += x; //T: x
-                    vertices[7] -= x; //T: y
-                    //vertices[8] += x; //T: z
+
+                vertices[0] += speed; //BL: x
+                vertices[1] += speed; //BL: y
+                //vertices[2] += speed; //BL: z
+                vertices[3] -= speed; //BR: x
+                vertices[4] += speed; //BR: y
+                //vertices[5] += speed; //BR: z
+                //vertices[6] = speed; //T: x
+                vertices[7] -= speed; //T: y
+                //vertices[8] += speed; //T: z
 
                 UpdateTriangleBuffer();
 
                 EscapeWindow(window);
             }
+        }
+
+        private static float[] RotateVector2D(float x, float y, float degrees) {
+            float[] result = new float[2];
+            result[0] = (float) (x * Math.Cos(degrees * Math.PI / 180f) - y * Math.Sin(degrees * Math.PI / 180f));
+            result[1] = (float) (x * Math.Sin(degrees * Math.PI / 180f) + y * Math.Cos(degrees * Math.PI / 180f));
+            return result;
         }
 
         private static void EscapeWindow(Window window) {
