@@ -5,24 +5,30 @@ using static OpenGL.Gl;
 
 namespace SharpEngine {
     class Program {
+        struct Vector {
+            public float x, y, z;
 
-        static float[] vertices = new float[] {
-            //triangle #1
-            //vertex 1 x, y, z (left down)
-            -.1f, -.1f, 0f,
-            //vertex 2 x, y, z (
-            .1f, -.1f, 0f,
-            //vertex 3 x, y, z
-            0f, .1f, 0f,
+            public Vector(float x, float y, float z) {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            }
 
-            // triangle #2
-            //vertex 4
-            .4f, .4f, 0f,
-            //vertex 5
-            .6f, .4f, 0f,
-            //vertex 6
-            .5f, .6f, 0f,
+            public Vector(float x, float y) {
+                this.x = x;
+                this.y = y;
+                this.z = 0;
+            }
+        }
 
+        private static Vector[] vertices = new Vector[] {
+
+            new Vector(-.1f, -.1f),
+            new Vector(.1f, -.1f),
+            new Vector(0f, .1f),
+            new Vector(.4f, .4f),
+            new Vector(.6f, .4f),
+            new Vector(.5f, .6f)
         };
 
         private const int vertexSize = 3;
@@ -47,26 +53,13 @@ namespace SharpEngine {
 
                 //TriangleMoveXpos();
 
-                //TriangleMoveYneg();
+                TriangleMoveYneg();
 
-                TriangleScaleXYneg();
+                //TriangleScaleXYneg();
 
                 //TriangleScaleXYpos();
 
-                // float speed = 0.001f;
-                //
-                // vertices[0] += speed; //BL: x
-                // vertices[1] += speed; //BL: y
-                // //vertices[2] += speed; //BL: z
-                // vertices[3] -= speed; //BR: x
-                // vertices[4] += speed; //BR: y
-                // //vertices[5] += speed; //BR: z
-                // //vertices[6] = speed; //T: x
-                // vertices[7] -= speed; //T: y
-                // //vertices[8] += speed; //T: z
-
                 UpdateTriangleBuffer();
-
                 EscapeWindow(window);
             }
         }
@@ -74,33 +67,33 @@ namespace SharpEngine {
         private static void TriangleScaleXYpos() {
             // scale triangle up
             for (var i = 0; i < vertices.Length; i++) {
-                vertices[i] *= 1.01f;
+                vertices[i].x += 1.01f;
             }
         }
 
         private static void TriangleScaleXYneg() {
             // scale triangle down
             for (var i = 0; i < vertices.Length; i++) {
-                vertices[i] *= 0.99f;
+                vertices[i].x *= 0.99f;
             }
         }
 
         private static void TriangleMoveYneg() {
             // move triangle down
-            for (var i = vertexY; i < vertices.Length; i += vertexSize) {
-                vertices[i] -= 0.001f;
+            for (var i = vertexY; i < vertices.Length; i++) {
+                vertices[i].y -= 0.001f;
             }
         }
 
         private static void TriangleMoveXpos() {
             // move triangle right
-            for (var i = vertexX; i < vertices.Length; i += vertexSize) {
-                vertices[i] += 0.001f;
+            for (var i = vertexX; i < vertices.Length; i++) {
+                vertices[i].x += 0.001f;
             }
         }
 
         private static void Render(Window window) {
-            glDrawArrays(GL_TRIANGLES, 0, vertices.Length/vertexSize);
+            glDrawArrays(GL_TRIANGLES, 0, vertices.Length);
             Glfw.SwapBuffers(window);
             //glFlush();
         }
@@ -124,21 +117,20 @@ namespace SharpEngine {
         }
 
         private static unsafe void LoadTriangleIntoBuffer() {
-
-            // load the vertices into a buffer
+            // load the vertices into buffer
             var vertexArray = glGenVertexArray();
             var vertexBuffer = glGenBuffer();
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
             UpdateTriangleBuffer();
-            glVertexAttribPointer(0, vertexSize, GL_FLOAT, false, vertexSize * sizeof(float), NULL);
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vector), NULL);
 
             glEnableVertexAttribArray(0);
         }
 
         static unsafe void UpdateTriangleBuffer() {
-            fixed (float* vertex = &vertices[0]) {
-                glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, vertex, GL_STATIC_DRAW);
+            fixed (Vector* vertex = &vertices[0]) {                                                    //GL_STATIC_DRAW
+                glBufferData(GL_ARRAY_BUFFER, sizeof(Vector) * vertices.Length, vertex, GL_DYNAMIC_DRAW);
             }
         }
 
