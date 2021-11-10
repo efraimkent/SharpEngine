@@ -43,15 +43,15 @@ namespace SharpEngine {
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
-                Render();
+                Render(window);
 
                 //TriangleMoveXpos();
 
                 //TriangleMoveYneg();
 
-                //TriangleScaleXYneg();
+                TriangleScaleXYneg();
 
-                TriangleScaleXYpos();
+                //TriangleScaleXYpos();
 
                 // float speed = 0.001f;
                 //
@@ -99,9 +99,10 @@ namespace SharpEngine {
             }
         }
 
-        private static void Render() {
+        private static void Render(Window window) {
             glDrawArrays(GL_TRIANGLES, 0, vertices.Length/vertexSize);
-            glFlush();
+            Glfw.SwapBuffers(window);
+            //glFlush();
         }
 
         private static void ClearScreen() {
@@ -169,7 +170,7 @@ namespace SharpEngine {
             Glfw.WindowHint(Hint.Decorated, true);
             Glfw.WindowHint(Hint.OpenglProfile, Profile.Core);
             Glfw.WindowHint(Hint.OpenglForwardCompatible, Constants.True);
-            Glfw.WindowHint(Hint.Doublebuffer, Constants.False);
+            Glfw.WindowHint(Hint.Doublebuffer, Constants.True);
 
             // create and launch a window
             var window = Glfw.CreateWindow(1024, 768, "SharpEngine", Monitor.None, Window.None);
