@@ -7,13 +7,28 @@ namespace SharpEngine {
     class Program {
 
         static float[] vertices = new float[] {
+            //triangle #1
             //vertex 1 x, y, z (left down)
-            -.5f, -.5f, 0f,
+            -.1f, -.1f, 0f,
             //vertex 2 x, y, z (
-            .5f, -.5f, 0f,
+            .1f, -.1f, 0f,
             //vertex 3 x, y, z
-            0f, .5f, 0f
+            0f, .1f, 0f,
+
+            // triangle #2
+            //vertex 4
+            .4f, .4f, 0f,
+            //vertex 5
+            .6f, .4f, 0f,
+            //vertex 6
+            .5f, .6f, 0f,
+
         };
+
+        private const int vertexSize = 3;
+        private const int vertexX = 0;
+        private const int vertexY = 1;
+        private const int vertexZ = 2;
 
         static void Main() {
             var window = CreateWindow();
@@ -27,28 +42,71 @@ namespace SharpEngine {
             // engine rendering loop
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
-                glClearColor(0, 0, 0, 1);
-                glClear(GL_COLOR_BUFFER_BIT);
-                glDrawArrays(GL_TRIANGLES, 0, 3);
-                glFlush();
+                ClearScreen();
+                Render();
 
-                float speed = 0.001f;
+                //TriangleMoveXpos();
 
+                //TriangleMoveYneg();
 
-                vertices[0] += speed; //BL: x
-                vertices[1] += speed; //BL: y
-                //vertices[2] += speed; //BL: z
-                vertices[3] -= speed; //BR: x
-                vertices[4] += speed; //BR: y
-                //vertices[5] += speed; //BR: z
-                //vertices[6] = speed; //T: x
-                vertices[7] -= speed; //T: y
-                //vertices[8] += speed; //T: z
+                //TriangleScaleXYneg();
+
+                TriangleScaleXYpos();
+
+                // float speed = 0.001f;
+                //
+                // vertices[0] += speed; //BL: x
+                // vertices[1] += speed; //BL: y
+                // //vertices[2] += speed; //BL: z
+                // vertices[3] -= speed; //BR: x
+                // vertices[4] += speed; //BR: y
+                // //vertices[5] += speed; //BR: z
+                // //vertices[6] = speed; //T: x
+                // vertices[7] -= speed; //T: y
+                // //vertices[8] += speed; //T: z
 
                 UpdateTriangleBuffer();
 
                 EscapeWindow(window);
             }
+        }
+
+        private static void TriangleScaleXYpos() {
+            // scale triangle up
+            for (var i = 0; i < vertices.Length; i++) {
+                vertices[i] *= 1.01f;
+            }
+        }
+
+        private static void TriangleScaleXYneg() {
+            // scale triangle down
+            for (var i = 0; i < vertices.Length; i++) {
+                vertices[i] *= 0.99f;
+            }
+        }
+
+        private static void TriangleMoveYneg() {
+            // move triangle down
+            for (var i = vertexY; i < vertices.Length; i += vertexSize) {
+                vertices[i] -= 0.001f;
+            }
+        }
+
+        private static void TriangleMoveXpos() {
+            // move triangle right
+            for (var i = vertexX; i < vertices.Length; i += vertexSize) {
+                vertices[i] += 0.001f;
+            }
+        }
+
+        private static void Render() {
+            glDrawArrays(GL_TRIANGLES, 0, vertices.Length/vertexSize);
+            glFlush();
+        }
+
+        private static void ClearScreen() {
+            glClearColor(0, 0, 0, 1);
+            glClear(GL_COLOR_BUFFER_BIT);
         }
 
         private static float[] RotateVector2D(float x, float y, float degrees) {
@@ -72,7 +130,7 @@ namespace SharpEngine {
             glBindVertexArray(vertexArray);
             glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
             UpdateTriangleBuffer();
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * sizeof(float), NULL);
+            glVertexAttribPointer(0, vertexSize, GL_FLOAT, false, vertexSize * sizeof(float), NULL);
 
             glEnableVertexAttribArray(0);
         }
@@ -86,12 +144,12 @@ namespace SharpEngine {
         private static void CreateShaderProgram() {
             // create vertex shader
             var vertexShader = glCreateShader(GL_VERTEX_SHADER);
-            glShaderSource(vertexShader, File.ReadAllText("shaders/red-triangle.vert"));
+            glShaderSource(vertexShader, File.ReadAllText("shaders/screen-coordinates.vert"));
             glCompileShader(vertexShader);
 
             // create fragment shader
             var fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, File.ReadAllText("shaders/red-triangle.frag"));
+            glShaderSource(fragmentShader, File.ReadAllText("shaders/blue.frag"));
             glCompileShader(fragmentShader);
 
             // create shader program - rendering pipeline
