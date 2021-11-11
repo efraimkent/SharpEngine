@@ -19,6 +19,26 @@ namespace SharpEngine {
                 this.y = y;
                 this.z = 0;
             }
+
+            // +
+            public static Vector operator +(Vector lhs, Vector rhs) {
+                return new Vector(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
+            }
+
+            // -
+            public static Vector operator -(Vector lhs, Vector rhs) {
+                return new Vector(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
+            }
+
+            // /
+            public static Vector operator /(Vector v, float f) {
+                return new Vector(v.x / f, v.y / f, v.z / f);
+            }
+
+            // *
+            public static Vector operator *(Vector v, float f) {
+                return new Vector(v.x * f, v.y * f, v.z * f);
+            }
         }
 
         private static Vector[] vertices = new Vector[] {
@@ -51,14 +71,6 @@ namespace SharpEngine {
                 ClearScreen();
                 Render(window);
 
-                //TriangleMoveXpos();
-
-                TriangleMoveYneg();
-
-                //TriangleScaleXYneg();
-
-                //TriangleScaleXYpos();
-
                 UpdateTriangleBuffer();
                 EscapeWindow(window);
             }
@@ -66,8 +78,9 @@ namespace SharpEngine {
 
         private static void TriangleScaleXYpos() {
             // scale triangle up
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].x += 1.01f;
+            for (var i = 0; i < vertices.Length / 2; i++) {
+                vertices[i].x *= 1.01f;
+                vertices[i].y *= 1.01f;
             }
         }
 
@@ -75,6 +88,7 @@ namespace SharpEngine {
             // scale triangle down
             for (var i = 0; i < vertices.Length; i++) {
                 vertices[i].x *= 0.99f;
+                vertices[i].y *= 0.99f;
             }
         }
 
@@ -82,6 +96,7 @@ namespace SharpEngine {
             // move triangle down
             for (var i = vertexY; i < vertices.Length; i++) {
                 vertices[i].y -= 0.001f;
+                vertices[i].x -= 0.001f;
             }
         }
 
@@ -101,13 +116,6 @@ namespace SharpEngine {
         private static void ClearScreen() {
             glClearColor(0, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT);
-        }
-
-        private static float[] RotateVector2D(float x, float y, float degrees) {
-            float[] result = new float[2];
-            result[0] = (float) (x * Math.Cos(degrees * Math.PI / 180f) - y * Math.Sin(degrees * Math.PI / 180f));
-            result[1] = (float) (x * Math.Sin(degrees * Math.PI / 180f) + y * Math.Cos(degrees * Math.PI / 180f));
-            return result;
         }
 
         private static void EscapeWindow(Window window) {
