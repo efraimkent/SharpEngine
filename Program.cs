@@ -8,19 +8,18 @@ namespace SharpEngine {
 
         static Triangle triangle = new Triangle(
             new Vertex[] {
-                new Vertex(new Vector(-.5f, 0f), Color.Red),
-                new Vertex(new Vector(.5f, 0f), Color.Green),
-                new Vertex(new Vector(0f, 1f), Color.Blue)
+                new Vertex(new Vector(-.1f, -.1f), Color.Blue),
+                new Vertex(new Vector(.1f, -.1f), Color.Blue),
+                new Vertex(new Vector(0f, .1f), Color.Blue)
             }
         );
 
         static void Main() {
             var window = CreateWindow();
-            LoadTriangleIntoBuffer();
             CreateShaderProgram();
 
             // engine rendering loop
-            var direction = new Vector(0.02f, 0.03f);
+            var direction = new Vector(0.01f, 0.02f);
             var multiplier = 0.99f;
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
@@ -68,18 +67,6 @@ namespace SharpEngine {
             //press escape to close window
             if (Glfw.GetKey(window, Keys.Escape) == InputState.Press)
                 Glfw.SetWindowShouldClose(window, true);
-        }
-
-        private static unsafe void LoadTriangleIntoBuffer() {
-            // load the vertices into buffer
-            var vertexArray = glGenVertexArray();
-            var vertexBuffer = glGenBuffer();
-            glBindVertexArray(vertexArray);
-            glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), Marshal.OffsetOf(typeof(Vertex), nameof(Vertex.position)));
-            glVertexAttribPointer(1, 4, GL_FLOAT, false, sizeof(Vertex), (void*)sizeof(Vector));
-            glEnableVertexAttribArray(0);
-            glEnableVertexAttribArray(1);
         }
 
         private static void CreateShaderProgram() {
