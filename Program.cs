@@ -39,6 +39,13 @@ namespace SharpEngine {
             public static Vector operator *(Vector v, float f) {
                 return new Vector(v.x * f, v.y * f, v.z * f);
             }
+
+            public static Vector Max(Vector a, Vector b) {
+                return new Vector(MathF.Max(a.x, b.x), MathF.Max(a.y, b.y), MathF.Max(a.z, b.z));
+            }
+            public static Vector Min(Vector a, Vector b) {
+                return new Vector(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
+            }
         }
 
         private static Vector[] vertices = new Vector[] {
@@ -46,9 +53,9 @@ namespace SharpEngine {
             new Vector(-.1f, -.1f),
             new Vector(.1f, -.1f),
             new Vector(0f, .1f),
-            new Vector(.4f, .4f),
-            new Vector(.6f, .4f),
-            new Vector(.5f, .6f)
+            // new Vector(.4f, .4f),
+            // new Vector(.6f, .4f),
+            // new Vector(.5f, .6f)
         };
 
         private const int vertexSize = 3;
@@ -58,32 +65,27 @@ namespace SharpEngine {
 
         static void Main() {
             var window = CreateWindow();
-
             LoadTriangleIntoBuffer();
-
-            LoadTriangleIntoBuffer();
-
             CreateShaderProgram();
 
             // engine rendering loop
-            var direction = new Vector(0.0005f, 0.005f);
+            var direction = new Vector(0.01f, 0.01f);
 
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
                 Render(window);
 
-                // check that X vectors don't escape outside screen
+                // checks X-Bounds of window
                 for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].x >= 1 || vertices[i].x <= -1) {
+                    if (vertices[i].x >= 1 && direction.x > 0 || vertices[i].x <= -1 && direction.x < 0) {
                         direction.x *= -1;
                         break;
                     }
                 }
-
-                // check that Y vectors don't escape outside screen
+                // checks Y-Bounds of window
                 for (var i = 0; i < vertices.Length; i++) {
-                    if (vertices[i].y >= 1 || vertices[i].y <= -1) {
+                    if (vertices[i].y >= 1 && direction.y > 0 || vertices[i].y <= -1 && direction.y < 0) {
                         direction.y *= -1;
                         break;
                     }
