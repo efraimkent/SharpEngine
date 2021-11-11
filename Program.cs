@@ -168,7 +168,7 @@ namespace SharpEngine {
 
             // create fragment shader
             var fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-            glShaderSource(fragmentShader, File.ReadAllText("shaders/blue.frag"));
+            glShaderSource(fragmentShader, File.ReadAllText("shaders/purple.frag"));
             glCompileShader(fragmentShader);
 
             // create shader program - rendering pipeline

@@ -32,6 +32,9 @@
     <None Update="shaders\blue.frag">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="shaders\purple.frag">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
