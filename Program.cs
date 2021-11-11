@@ -66,10 +66,28 @@ namespace SharpEngine {
             CreateShaderProgram();
 
             // engine rendering loop
+            var direction = new Vector(0.0005f, 0.005f);
+
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
                 Render(window);
+
+                // check that X vectors don't escape outside screen
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].x >= 1 || vertices[i].x <= -1) {
+                        direction.x *= -1;
+                        break;
+                    }
+                }
+
+                // check that Y vectors don't escape outside screen
+                for (var i = 0; i < vertices.Length; i++) {
+                    if (vertices[i].y >= 1 || vertices[i].y <= -1) {
+                        direction.y *= -1;
+                        break;
+                    }
+                }
 
                 UpdateTriangleBuffer();
                 EscapeWindow(window);
