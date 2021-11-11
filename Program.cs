@@ -70,11 +70,54 @@ namespace SharpEngine {
 
             // engine rendering loop
             var direction = new Vector(0.01f, 0.01f);
-
+            var multiplier = 0.999f;
+            var scale = 1f;
             while (!Glfw.WindowShouldClose(window)) {
                 Glfw.PollEvents(); // react to window changes (position etc.)
                 ClearScreen();
                 Render(window);
+
+                // 1. Scale the Triangle without Moving it
+
+                // 1.1 Move the Triangle to the Center, so we can scale it without Side Effects
+                // 1.1.1 Find the Center of the Triangle
+                // 1.1.1.1 Find the Minimum and Maximum
+                var min = vertices[0];
+                for (var i = 1; i < vertices.Length; i++) {
+                    min = Vector.Min(min, vertices[i]);
+                }
+                var max = vertices[0];
+                for (var i = 1; i < vertices.Length; i++) {
+                    max = Vector.Max(max, vertices[i]);
+                }
+                // 1.1.1.2 Average out the Minimum and Maximum to get the Center
+                var center = (min + max) / 2;
+                // 1.1.2 Move the Triangle the Center
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] -= center;
+                }
+                // 1.2 Scale the Triangle
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] *= multiplier;
+                }
+                // 1.3 Move the Triangle Back to where it was before
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] += center;
+                }
+
+                // 2. Keep track of the Scale, so we can reverse it
+                scale *= multiplier;
+                if (scale <= 0.5f) {
+                    multiplier = 1.001f;
+                }
+                if (scale >= 1f) {
+                    multiplier = 0.999f;
+                }
+
+                // 3. Move the Triangle by its Direction
+                for (var i = 0; i < vertices.Length; i++) {
+                    vertices[i] += direction;
+                }
 
                 // checks X-Bounds of window
                 for (var i = 0; i < vertices.Length; i++) {
