@@ -4,49 +4,50 @@ using GLFW;
 using static OpenGL.Gl;
 
 namespace SharpEngine {
-    class Program {
-        struct Vector {
-            public float x, y, z;
+    public struct Vector {
+        public float x, y, z;
 
-            public Vector(float x, float y, float z) {
-                this.x = x;
-                this.y = y;
-                this.z = z;
-            }
-
-            public Vector(float x, float y) {
-                this.x = x;
-                this.y = y;
-                this.z = 0;
-            }
-
-            // +
-            public static Vector operator +(Vector lhs, Vector rhs) {
-                return new Vector(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
-            }
-
-            // -
-            public static Vector operator -(Vector lhs, Vector rhs) {
-                return new Vector(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
-            }
-
-            // /
-            public static Vector operator /(Vector v, float f) {
-                return new Vector(v.x / f, v.y / f, v.z / f);
-            }
-
-            // *
-            public static Vector operator *(Vector v, float f) {
-                return new Vector(v.x * f, v.y * f, v.z * f);
-            }
-
-            public static Vector Max(Vector a, Vector b) {
-                return new Vector(MathF.Max(a.x, b.x), MathF.Max(a.y, b.y), MathF.Max(a.z, b.z));
-            }
-            public static Vector Min(Vector a, Vector b) {
-                return new Vector(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
-            }
+        public Vector(float x, float y, float z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
+
+        public Vector(float x, float y) {
+            this.x = x;
+            this.y = y;
+            this.z = 0;
+        }
+
+        // +
+        public static Vector operator +(Vector lhs, Vector rhs) {
+            return new Vector(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
+        }
+
+        // -
+        public static Vector operator -(Vector lhs, Vector rhs) {
+            return new Vector(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z);
+        }
+
+        // /
+        public static Vector operator /(Vector v, float f) {
+            return new Vector(v.x / f, v.y / f, v.z / f);
+        }
+
+        // *
+        public static Vector operator *(Vector v, float f) {
+            return new Vector(v.x * f, v.y * f, v.z * f);
+        }
+
+        public static Vector Max(Vector a, Vector b) {
+            return new Vector(MathF.Max(a.x, b.x), MathF.Max(a.y, b.y), MathF.Max(a.z, b.z));
+        }
+        public static Vector Min(Vector a, Vector b) {
+            return new Vector(MathF.Min(a.x, b.x), MathF.Min(a.y, b.y), MathF.Min(a.z, b.z));
+        }
+    }
+
+    class Program {
 
         private static Vector[] vertices = new Vector[] {
 
@@ -57,11 +58,6 @@ namespace SharpEngine {
             // new Vector(.6f, .4f),
             // new Vector(.5f, .6f)
         };
-
-        private const int vertexSize = 3;
-        private const int vertexX = 0;
-        private const int vertexY = 1;
-        private const int vertexZ = 2;
 
         static void Main() {
             var window = CreateWindow();
@@ -136,37 +132,6 @@ namespace SharpEngine {
 
                 UpdateTriangleBuffer();
                 EscapeWindow(window);
-            }
-        }
-
-        private static void TriangleScaleXYpos() {
-            // scale triangle up
-            for (var i = 0; i < vertices.Length / 2; i++) {
-                vertices[i].x *= 1.01f;
-                vertices[i].y *= 1.01f;
-            }
-        }
-
-        private static void TriangleScaleXYneg() {
-            // scale triangle down
-            for (var i = 0; i < vertices.Length; i++) {
-                vertices[i].x *= 0.99f;
-                vertices[i].y *= 0.99f;
-            }
-        }
-
-        private static void TriangleMoveYneg() {
-            // move triangle down
-            for (var i = vertexY; i < vertices.Length; i++) {
-                vertices[i].y -= 0.001f;
-                vertices[i].x -= 0.001f;
-            }
-        }
-
-        private static void TriangleMoveXpos() {
-            // move triangle right
-            for (var i = vertexX; i < vertices.Length; i++) {
-                vertices[i].x += 0.001f;
             }
         }
 
